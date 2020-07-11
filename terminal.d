@@ -22,7 +22,8 @@ version(linux){
 	private extern(C) size_t isatty(size_t desc);
 	private extern(C) int fileno(shared(_iobuf)*);
 	bool isATTy(ref File f){ // determine whether a given file is connected to a terminal
-		if(!strcmp(getenv("TERM"),"dumb")) return false;
+		auto termEnv = getenv("TERM");
+		if(!termEnv||!strcmp(termEnv,"dumb")) return false;
 		return cast(bool)isatty(fileno(f.getFP()));
 	}
 	int getTabSize(){
